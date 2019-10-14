@@ -55,7 +55,7 @@ static uint8_t get_temp(void) {
 
 int main(void) {
   // Retrieve a handle to the LED service.
-  _led_service = ipc_discover("org.tockos.tutorials.ipc.led");
+  _led_service = ipc_discover("led_worker");
   if (_led_service < 0) {
     printf("No led service\n");
     return -1;
@@ -66,7 +66,7 @@ int main(void) {
   ipc_share(_led_service, _led_buf, 64);
 
   // Retrieve a handle to the LED service.
-  _temp_service = ipc_discover("org.tockos.tutorials.ipc.temp");
+  _temp_service = ipc_discover("temperature_worker");
   if (_temp_service < 0) {
     printf("No temperature service\n");
     return -1;
@@ -84,7 +84,7 @@ int main(void) {
   while (1) {
     uint8_t temp = get_temp();
 
-    if(temp > 28) {
+    if(temp > 25) {
       uint8_t led_index = (0xFF) % _number_of_leds;
       uint8_t led_state = 0xFF;
       set_led(led_index, led_state);
